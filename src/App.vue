@@ -1,17 +1,20 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <hr/>
-  <label style="font-size:20px"> Company Name:  &#160   {{cmpName}}  </label>
+  <label style="font-size:20px"> Company Name:  &#160  {{splitData(1)}}  </label>
   <hr/>
   <label  style="font-size:20px"> Order Number:  &#160  </label> 
-    <a  style="font-size:25px" href="https://ap.lhlconsulting.com/a.pdf" > {{soNo}}   </a>
+    <a  style="font-size:25px" href="https://ap.lhlconsulting.com/a.pdf" > {{splitData(0)}}   </a>
   <hr/>
   <p style="font-size:20px">  Please view from the above link </p> 
   <p style="font-size:20px">  and select yout approval carefully. </p> 
   <hr/>
+  <p><label  style="font-size:20px"> Remark   &#160  </label> </p>
+  <input style="font-size:20px; width: 500px; "  type="text" v-model="remark"  >
+  <hr/>
   <button style="height:50px;width:120px; font-size: 20px; margin-right:20px;" @click.prevent="approved">Approve</button>
   <button style="height:50px;width:120px; font-size: 20px; margin:10px;" @click.prevent="rejected">Reject</button>
-</template>
+ </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
@@ -23,15 +26,21 @@ export default {
   },
   data() {
     return {
-      soNo: new URL(location.href).searchParams.get('so'),
-      cmpName: new URL(location.href).searchParams.get('cmp')
+      soNo:  '',    // new URL(location.href).searchParams.get('so'),
+      cmpName: '',  //new URL(location.href).searchParams.get('cmp'),
+      remark: '',  //new URL(location.href).searchParams.get('cmp'),
     }
   },
   //components: { HelloWorld }
   methods: {
-
+    splitData(index) {
+       const encoded64Data = new URL(location.href).searchParams.get('data')
+       const plainTextData = window.atob(encoded64Data); // decode a string from base64
+       let data1 = plainTextData.split("==");
+       return data1[index]
+     },
     approved() {
-            const plainText = this.soNo + "==" + this.cmpName + "==Approved" 
+            const plainText = this.splitData(0) + "==" + this.splitData(1)  + "==Approved" + "==" + this.remark
       const encoded64 = window.btoa(plainText); // encode a string
       const url = 'https://ap.lhlconsulting.com/approval/api/approve?data=' + encoded64
 
@@ -50,7 +59,7 @@ export default {
     },
 
     rejected() {
-      const plainText = this.soNo + "==" + this.cmpName + "==Rejected" 
+      const plainText = this.splitData(0) + "==" + this.splitData(1) + "==Rejected"  + "==" + this.remark
       const encoded64 = window.btoa(plainText); // encode a string
       const url = 'https://ap.lhlconsulting.com/approval/api/approve?data=' + encoded64
       //https://ap.lhlconsulting.com/approval/api/approve?data=UzAyMDAxPT1BQkMgUC9M
@@ -71,12 +80,6 @@ export default {
     
     
   }
-
-
-
-
-
-
 
 
 }
