@@ -1,10 +1,12 @@
 <template>
   <img alt="Vue logo" src="./assets/logo.png">
   <hr/>
-  <label style="font-size:20px"> Company Name:  &#160  {{splitData(1)}}  </label>
+  <label style="font-size:20px"> {{splitData(0)}} - Approval App. </label>
+  <hr/>
+  <label style="font-size:20px"> Customer Name:  &#160  {{splitData(2)}}  </label>
   <hr/>
   <label  style="font-size:20px"> Order Number:  &#160  </label> 
-    <a  style="font-size:25px" href="https://ap.lhlconsulting.com/a.pdf" > {{splitData(0)}}   </a>
+    <a  style="font-size:25px" href="https://ap.lhlconsulting.com/a.pdf"  target="_blank"> {{splitData(1)}}   </a>
   <hr/>
   <p style="font-size:20px">  Please view from the above link </p> 
   <p style="font-size:20px">  and select yout approval carefully. </p> 
@@ -14,7 +16,9 @@
   <hr/>
   <button style="height:50px;width:120px; font-size: 20px; margin-right:20px;" @click.prevent="approved">Approve</button>
   <button style="height:50px;width:120px; font-size: 20px; margin:10px;" @click.prevent="rejected">Reject</button>
- </template>
+   <hr/>
+  <input style="font-size:15px; width: 500px; "  type="text" v-model="urlApp"  >
+  </template>
 
 <script>
 //import HelloWorld from './components/HelloWorld.vue'
@@ -26,9 +30,11 @@ export default {
   },
   data() {
     return {
+      zp: '',
       soNo:  '',    // new URL(location.href).searchParams.get('so'),
       cmpName: '',  //new URL(location.href).searchParams.get('cmp'),
       remark: '',  //new URL(location.href).searchParams.get('cmp'),
+      urlApp: ""
     }
   },
   //components: { HelloWorld }
@@ -43,7 +49,8 @@ export default {
             const plainText = this.splitData(0) + "==" + this.splitData(1)  + "==Approved" + "==" + this.remark
       const encoded64 = window.btoa(plainText); // encode a string
       const url = 'https://ap.lhlconsulting.com/approval/api/approve?data=' + encoded64
-
+      this.urlApp =url
+      
       const requestOptions = {
         method: "GET",
         mode: 'no-cors',
@@ -55,7 +62,7 @@ export default {
         .catch(error => console.log('error', error));  
 
       window.alert("Accpeted")
-      window.close()  
+      //window.close()  
     },
 
     rejected() {
