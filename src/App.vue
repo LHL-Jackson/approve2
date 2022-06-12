@@ -7,8 +7,8 @@
   <hr/>
   <label> Customer Name:  &#160  {{urlData(3)}}  </label>
   <hr/>
-  <label> Order Number:  &#160  </label> 
-    <a  href="https://ap.lhlconsulting.com/a.pdf"  target="_blank"> {{urlData(1)}}   </a>
+  <label> Order Number:  &#160  {{urlData(1)}} </label> 
+    <!-- <a  href="https://ap.lhlconsulting.com/a.pdf"  target="_blank"> {{urlData(1)}}   </a> -->
   <hr/>
   
   <p>  {{appMessage()}} </p> 
@@ -85,7 +85,8 @@ export default {
     },
 
     rejected() {
-      const plainText = this.urlData(0) + "==" + this.urlData(1) + "==Rejected"  + "==" + this.appLevel +"==" + this.remark
+      const plainText = this.urlData(0) + "==" + this.urlData(1) 
+                        + "==Rejected"  + "==" + this.appLevel +"==" + this.remark
       const encoded64 = window.btoa(plainText); // encode a string
       const url = 'https://ap.lhlconsulting.com/approval/api/approve?data=' + encoded64
       //https://ap.lhlconsulting.com/approval/api/approve?data=UzAyMDAxPT1BQkMgUC9M
