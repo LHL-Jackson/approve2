@@ -10,3 +10,7 @@ input[type="text"] {
 [v-cloak] {
   display: none;
 }
+
+[x-hidden] {
+  display: none;
+}
